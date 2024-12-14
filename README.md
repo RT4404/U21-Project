@@ -52,7 +52,7 @@ The three scripts that are part of the U21 Project are:
 The three scripts are located in "\XXX\U21-Project-main\U21-Project-main\ci" directory of this installation (XXX is where the project is downloaded to. The complete path might be Home\Downloads\U21-Project-main\U21-Project-main\ci for example). 
 
 The steps to setup the scripts with Vortex are as follows:
-* Place the ci folder from this project into the ci folder of your Vortex installation.
+* Place the ci folder from this project into the ci folder (vortex/ci) of your Vortex installation.
 * Run the following commands from a fresh terminal:
 ```sh
 cd vortex/ci
