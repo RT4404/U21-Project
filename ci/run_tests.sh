@@ -55,6 +55,7 @@ run_test() {
 
 # Directory configuration
 ROOT_DIR="RESULTS_2"
+rm -rf "$ROOT_DIR"
 mkdir -p "$ROOT_DIR"
 
 # Last configurations
