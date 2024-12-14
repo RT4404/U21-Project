@@ -102,7 +102,7 @@ run_test() {
 }
 
 # Directory configuration
-ROOT_DIR="RESULTS_2"
+ROOT_DIR="RESULTS"
 rm -rf "$ROOT_DIR"
 mkdir -p "$ROOT_DIR"
 
