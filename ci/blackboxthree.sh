@@ -21,8 +21,6 @@ show_usage()
 	echo ""
 	
 	echo "General Configs:"
-	echo "--driver=simx|rtlsim|gpu|opae|xrt"
-	echo "--app=<name>"
 	echo "--clusters=<number>"
 	echo "--cores=<number>"
 	echo "--warps=<number>"
