@@ -18,49 +18,6 @@ show_usage() {
     echo "Usage: $0 [--baseline] [--cache] [--config1] [--config2] [--stress] [--all] [--h|--help]"
 }
 
-declare -a tests=()
-
-while [ "$1" != "" ]; do
-    case $1 in
-    --baseline)
-        tests+=("baseline_tests")
-        ;;
-    --cache)
-        tests+=("cache_tests")
-        ;;
-    --config1)
-        tests+=("basic_config1_tests")
-        ;;
-    --config2)
-        tests+=("basic_config2_tests")
-        ;;
-    --stress)
-        tests+=("stress_tests")
-        ;;
-    --all)
-        tests=("baseline_tests" "cache_tests" "basic_config1_tests" "basic_config2_tests" "stress_tests")
-        ;;
-    -h | --help)
-        show_usage
-        exit 0
-        ;;
-    *)
-        show_usage
-        exit 1
-        ;;
-    esac
-    shift
-done
-
-if [ ${#tests[@]} -eq 0 ]; then
-    show_usage
-    exit 1
-fi
-
-for test in "${tests[@]}"; do
-    $test
-done
-
 # Function to sanitize command for filename
 sanitize_filename() {
   echo "$1" | sed 's/[^a-zA-Z0-9_-]/_/g'
@@ -103,7 +60,6 @@ run_test() {
 
 # Directory configuration
 ROOT_DIR="RESULTS"
-rm -rf "$ROOT_DIR"
 mkdir -p "$ROOT_DIR"
 
 # Last configurations
@@ -115,6 +71,7 @@ XSIZE="8"
 # BASELINE TESTS #
 ##################
 baseline_tests(){
+	rm -rf "$ROOT_DIR/Baseline"
 	echo "===========Testing baselines==========="
 	DIR="$ROOT_DIR/Baseline/demo"
 	run_test "--driver=rtlsim --app=demo" "$DIR"
@@ -161,6 +118,7 @@ baseline_tests(){
 # CACHE CONFIGURATIONS #
 #########################
 cache_tests(){
+	rm -rf "$ROOT_DIR/Cache_configurations"
 	echo "===========Testing cache configurations==========="
 
 	DIR="$ROOT_DIR/Cache_configurations/disable_local_memory"
@@ -229,6 +187,7 @@ cache_tests(){
 # BASIC CONFIGURATION 1 #
 #########################
 basic_config1_tests(){
+	rm -rf "$ROOT_DIR/Basic_configurations_1"
 	echo "===========Testing basic configurations 1==========="
 	DIR="$ROOT_DIR/Basic_configurations_1/warps_threads"
 	# Warps
@@ -295,6 +254,7 @@ basic_config1_tests(){
 # BASIC CONFIGURATION 2 #
 #########################
 basic_config2_tests(){
+	rm -rf "$ROOT_DIR/Basic_configurations_2"
 	echo "===========Testing basic configurations 2==========="
 	DIR="$ROOT_DIR/Basic_configurations_2/disable_DPI"
 	if [ "$XLEN" == "64" ]; then
@@ -355,6 +315,7 @@ basic_config2_tests(){
 # STRESS CONFIGURATIONS #
 #########################
 stress_tests(){
+	rm -rf "$ROOT_DIR/Stress_configurations"
 	echo "===========Stress Tests==========="
 
 	# Test verilator reset values
@@ -362,5 +323,48 @@ stress_tests(){
 	run_test "--driver=opae --cores=2 --clusters=2 --l2cache --l3cache --app=dogfood --verilator_reset_value=1 --socket_size=1 --dcache_writeback=1 --l2_writeback=1 --l3_writeback=1" "$DIR"
 	run_test "--driver=xrt --app=sgemmx --args=\"-n128\" --verilator_reset_value=1 --l2cache" "$DIR"
 }
+
+declare -a tests=()
+
+while [ "$1" != "" ]; do
+    case $1 in
+    --baseline)
+        tests+=("baseline_tests")
+        ;;
+    --cache)
+        tests+=("cache_tests")
+        ;;
+    --config1)
+        tests+=("basic_config1_tests")
+        ;;
+    --config2)
+        tests+=("basic_config2_tests")
+        ;;
+    --stress)
+        tests+=("stress_tests")
+        ;;
+    --all)
+        tests=("baseline_tests" "cache_tests" "basic_config1_tests" "basic_config2_tests" "stress_tests")
+        ;;
+    -h | --help)
+        show_usage
+        exit 0
+        ;;
+    *)
+        show_usage
+        exit 1
+        ;;
+    esac
+    shift
+done
+
+if [ ${#tests[@]} -eq 0 ]; then
+    show_usage
+    exit 1
+fi
+
+for test in "${tests[@]}"; do
+    $test
+done
 
 echo "Tests completed!"
