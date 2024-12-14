@@ -68,9 +68,9 @@ def save_to_csv(collected_data, output_file):
 
 # Main
 def main():
-    parser = argparse.ArgumentParser(description="Extract metrics from log files across multiple folders and save them into a single CSV.")
-    parser.add_argument("log_folders", nargs='+', help="Paths to the folders containing log files. You can specify multiple folders.")
-    parser.add_argument("target_metric", help="The target metric to extract (e.g., IPC).")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("log_folders", nargs='+')
+    parser.add_argument("target_metric")
     args = parser.parse_args()
 
     # Ensure the output folder exists
